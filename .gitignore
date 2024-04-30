@@ -18,4 +18,3 @@ py/target
 .DS_Store
 __pycache__
 *.pdf
-py/data/*.json
