@@ -1,4 +1,8 @@
 from hashlib import sha256
+import sys
+import os
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, parent_dir)
 from bm_bls import BM_BLS
 from bm_sb import BM_SB
 
