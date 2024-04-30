@@ -1,6 +1,6 @@
 from hashlib import sha256
 from unittest import TestCase
-from utils import serialize, controller, multi_controller, byte_count_decorator# timing_decorator
+from utils import serialize, controller, multi_controller
 from ec import ECPoint, FQ
 
 class BM_SBException(Exception):
@@ -61,7 +61,6 @@ class BM_SB:
 
         return y_bar != 0 and R_bar_check
 
-    #@byte_count_decorator
     def U_sign(self, pks, m, S):
         A_i = []
         B_i = []
@@ -129,7 +128,6 @@ class BM_SB:
 
         yield sigma
 
-    #@byte_count_decorator
     def S_sign(self, i, pk, sk):
         yield
         a = self.fq.rand()
