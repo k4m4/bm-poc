@@ -13,8 +13,10 @@ description = ""
 authors = ["redacted"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 py-ecc = "^7.0.0"
+maturin = "^1.5.1"
+matplotlib = "^3.8.4"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
