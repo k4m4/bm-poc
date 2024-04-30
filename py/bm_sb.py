@@ -158,30 +158,16 @@ class BM_SB:
         )
 
 from ec import from_ecc_py
-#from py_ecc import optimized_bn128 as bn128, optimized_bls12_381 as bls12_381
-#from py_ecc import bn128, bls12_381
+# from py_ecc import optimized_bn128 as bn128, optimized_bls12_381 as bls12_381
+# from py_ecc import bn128, bls12_381
 import py_eth_pairing
-#BN128FQ, BN128Point = from_ecc_py('BN128', bn128)
+# BN128FQ, BN128Point = from_ecc_py('BN128', bn128)
 BN128FQ, BN128Point = from_ecc_py('BN128', py_eth_pairing)
-#BLS12381FQ, BLS12381Point = from_ecc_py('BLS12381', bls12_381)
-
-import json
-def log_benchmark_data(pks, m, sigma):
-    (R_bar, y_bar, z_bar) = sigma
-    data = {
-        "R_bar": R_bar.p,
-        "m": m.n,
-        "pks": list(map(lambda x: x.p, pks)),
-        "y_bar": y_bar.n,
-        "z_bar": z_bar.n,
-    }
-
-    with open('data/input.json', 'w') as f:
-        json.dump(data, f)
+# BLS12381FQ, BLS12381Point = from_ecc_py('BLS12381', bls12_381)
 
 class TestBM_SB(TestCase):
     def test(self):
-        #for ec_point, fq, max_int_size in [(BLS12381Point, BLS12381FQ, 64), (BN128Point, BN128FQ, 32)]:
+        # for ec_point, fq, max_int_size in [(BLS12381Point, BLS12381FQ, 64), (BN128Point, BN128FQ, 32)]:
         for ec_point, fq, max_int_size in [(BN128Point, BN128FQ, 32)]:
             with self.subTest(msg=f"Testing with {ec_point.__name__} and {fq.__name__}"):
                 m = BN128FQ.rand()
@@ -191,4 +177,3 @@ class TestBM_SB(TestCase):
                 (sks, pks) = bm.keygen()
                 sigma = bm.sign(pks, sks, m)
                 self.assertTrue(bm.verify(pks, m, sigma))
-                log_benchmark_data(pks, m, sigma) # TODO

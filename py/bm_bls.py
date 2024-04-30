@@ -102,45 +102,15 @@ class BM_BLS:
 
 import unittest
 from ec import from_ecc_py
-#from py_ecc import bn128
-#BN128FQ, BN128Point = from_ecc_py('BN128', bn128)
+# from py_ecc import bn128
+# BN128FQ, BN128Point = from_ecc_py('BN128', bn128)
 import py_eth_pairing
 BN128FQ, BN128Point = from_ecc_py('BN128', py_eth_pairing)
-
-import json
-def log_benchmark_data(apk, ms, sigmas):
-    a, b = apk.p
-    apk = [*a.coeffs, *b.coeffs]
-    data = {
-        "apk": list(map(lambda fq: fq.n, apk)), # TODO: clean up
-        "messages": list(map(lambda x: x.n, ms)),
-        "signatures": list(map(lambda x: x.p, sigmas)),
-    }
-
-    with open('data/input_aggr.json', 'w') as f:
-        json.dump(data, f)
-
-def log_benchmark_data_hm(apk, hms, sigmas):
-    hms_fmt = []
-    for hm in hms:
-        a, b = hm.p
-        hms_fmt.append([a.n, b.n])
-
-    a, b = apk.p
-    apk = [*a.coeffs, *b.coeffs]
-    data = {
-        "apk": list(map(lambda fq: fq.n, apk)), # TODO: clean up
-        "messageHashes": hms_fmt, # TODO: clean up
-        "signatures": list(map(lambda x: x.p, sigmas)),
-    }
-
-    with open('data/input_aggr_hm.json', 'w') as f:
-        json.dump(data, f)
 
 class TestBM_BLS(unittest.TestCase):
     def test(self):
         m = BN128FQ(1337)
-        num_signers = 11
+        num_signers = 2
         bm = BM_BLS(BN128Point, BN128FQ, num_signers)
         (pks, sks) = bm.keygen()
         apk = bm.keyaggr(pks)
@@ -148,34 +118,32 @@ class TestBM_BLS(unittest.TestCase):
         self.assertTrue(bm.verify(pks, m, sigma))
 
     def test_aggr(self):
-        num_messages = 1
-        num_signers = 11
+        num_messages = 16
+        num_signers = 4
 
-        ms = [BN128FQ(i) for i in range(1, num_messages+1)]
+        ms = [BN128FQ.rand() for _ in range(1, num_messages+1)]
         bm = BM_BLS(BN128Point, BN128FQ, num_signers)
         (pks, sks) = bm.keygen()
         apk = bm.keyaggr(pks)
         sigmas = [bm.sign(sks, pks, m) for m in ms]
-        #for (m, sigma) in zip(ms, sigmas):
-        #    self.assertTrue(bm.verify(pks, m, sigma))
+        for (m, sigma) in zip(ms, sigmas):
+            self.assertTrue(bm.verify(pks, m, sigma))
 
         self.assertTrue(bm.verify_aggr(pks, ms, sigmas))
-        log_benchmark_data(apk, ms, sigmas)
 
     def test_aggr_hm(self):
-        num_messages = 1
+        num_messages = 8
         num_signers = 2
 
         bm = BM_BLS(BN128Point, BN128FQ, num_signers)
-        ms = [BN128FQ(i) for i in range(1, num_messages+1)]
+        ms = [BN128FQ.rand() for _ in range(1, num_messages+1)]
 
         hms = [bm.H(m) for m in ms]
 
         (pks, sks) = bm.keygen()
         apk = bm.keyaggr(pks)
         sigmas = [bm.sign(sks, pks, m) for m in ms]
-        #for (m, sigma) in zip(ms, sigmas):
-        #    self.assertTrue(bm.verify(pks, m, sigma))
+        for (m, sigma) in zip(ms, sigmas):
+            self.assertTrue(bm.verify(pks, m, sigma))
 
         self.assertTrue(bm.verify_aggr_hm(pks, hms, sigmas))
-        log_benchmark_data_hm(apk, hms, sigmas)
