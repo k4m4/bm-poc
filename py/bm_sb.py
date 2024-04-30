@@ -83,7 +83,6 @@ class BM_SB:
         R_bar = self.ec_point.sum(
             [
                 self.g * r,
-                #self.ec_point.sum([pks[i] * (alpha_cubed + beta_i[i]) for i in range(self.num_of_signers)]),
                 self.ec_point.sum([pks[i] * (alpha_cubed * beta_i[i]) for i in range(self.num_of_signers)]),
                 A_sum * alpha_cubed,
                 B_sum * alpha,
