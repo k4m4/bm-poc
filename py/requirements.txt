@@ -1,0 +1,7 @@
+cached-property==1.5.2
+cytoolz==0.12.2
+eth-hash==0.6.0
+eth-typing==4.0.0
+eth-utils==3.0.0
+py-ecc==7.0.0
+toolz==0.12.0

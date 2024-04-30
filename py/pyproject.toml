@@ -1,0 +1,23 @@
+[project]
+name = "bm-poc"
+dependencies = ["py_ecc~=7.0.0"]
+
+[build-system]
+requires = ["maturin>=1.0,<2.0"]
+build-backend = "maturin"
+
+[tool.poetry]
+name = "bm-poc"
+version = "0.1.0"
+description = ""
+authors = ["redacted"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+py-ecc = "^7.0.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[tool.poetry.group.dev.dependencies]
+maturin = "^1.4.0"
