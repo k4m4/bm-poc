@@ -6,7 +6,7 @@ from utils import serialize, multi_controller, timing_decorator, byte_count_deco
 
 from py_ecc.bn128 import neg, add, multiply, FQ12 # TODO: remove
 
-class BM_BLS: # TODO: rename to be consistent w/ paper
+class BM_BLS:
     def __init__(self, ec_point: ECPoint, fq: FQ, num_signers):
         self.ec_point = ec_point
         self.fq = fq
