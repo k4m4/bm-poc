@@ -1,6 +1,6 @@
 # `BM_{BLS,SB}` PoC
 
-> Implementation of single-use, anonymous tokens with decentralized issuance and public verifiability
+> Proof-of-concept implementations of anonymous tokens with decentralized issuance.
 
 ## Testing
 
